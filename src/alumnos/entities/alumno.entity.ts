@@ -1,6 +1,8 @@
 import { Column } from 'typeorm/decorator/columns/Column.js';
 import { PrimaryGeneratedColumn } from 'typeorm/decorator/columns/PrimaryGeneratedColumn.js';
 import { Entity } from 'typeorm/decorator/entity/Entity.js';
+import { Curso } from './curso.entity.js';
+import { ManyToOne } from 'typeorm';
 
 @Entity()
 export class Alumno {
@@ -19,6 +21,6 @@ export class Alumno {
   @Column()
   email: string;
 
-  @Column()
-  curso: string;
+  @ManyToOne(() => Curso, (curso) => curso.alumnos)
+  curso: Curso;
 }
