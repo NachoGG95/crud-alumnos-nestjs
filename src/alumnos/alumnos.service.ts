@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Alumno } from './entities/alumno.entity.js';
 import { Repository } from 'typeorm/repository/Repository.js';
 import { Curso } from './entities/curso.entity.js';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class AlumnosService {
@@ -58,14 +59,39 @@ export class AlumnosService {
     return alumno;
   }
 
-  async update(id: number, dto: UpdateAlumnoDto) {
-    await this.findOne(id);
-    await this.alumnosRepository.update(id, dto);
-    return this.findOne(id);
+async update(id: number, dto: UpdateAlumnoDto) {
+  const alumno = await this.findOne(id);
+
+  const { cursoId, ...datos } = dto;
+
+  if (cursoId !== undefined) {
+    const curso = await this.cursosRepository.findOneBy({ id: cursoId });
+    if (!curso) {
+      throw new NotFoundException('El curso indicado no existe');
+    }
+    alumno.curso = curso;
   }
+
+  Object.assign(alumno, datos);
+  return await this.alumnosRepository.save(alumno);
+}
 
   async remove(id: number) {
     const alumno = await this.findOne(id);
     return await this.alumnosRepository.remove(alumno);
+  }
+  async findByApellido(apellido: string) {
+    const alumnos = await this.alumnosRepository.find({
+      where: { apellido: ILike(`%${apellido}%`) },
+      relations: { curso: true },
+    });
+
+    if (alumnos.length === 0) {
+      throw new NotFoundException(
+        `No se encontraron alumnos con apellido "${apellido}"`,
+      );
+    }
+
+    return alumnos;
   }
 }

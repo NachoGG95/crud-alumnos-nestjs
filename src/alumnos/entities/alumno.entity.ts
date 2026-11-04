@@ -21,6 +21,9 @@ export class Alumno {
   @Column()
   email: string;
 
+  @Column({ nullable: true })
+  telefono: string;
+
   @ManyToOne(() => Curso, (curso) => curso.alumnos)
   curso: Curso;
 }

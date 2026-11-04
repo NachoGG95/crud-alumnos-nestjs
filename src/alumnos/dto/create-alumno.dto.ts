@@ -21,4 +21,5 @@ export class CreateAlumnoDto {
   @IsNotEmpty()
   cursoId: number;
 
+  telefono: string;
 }
