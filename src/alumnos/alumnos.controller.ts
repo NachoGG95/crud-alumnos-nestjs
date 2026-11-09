@@ -13,7 +13,7 @@ import { CreateAlumnoDto } from './dto/create-alumno.dto.js';
 import { UpdateAlumnoDto } from './dto/update-alumno.dto.js';
 import { AuthGuard } from '@nestjs/passport';
 
-//@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Controller('alumnos')
 export class AlumnosController {
   constructor(private readonly alumnosService: AlumnosService) {}
