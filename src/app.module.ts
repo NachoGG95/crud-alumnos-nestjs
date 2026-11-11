@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlumnosModule } from './alumnos/alumnos.module.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module.js';
+import { CursosModule } from './cursos/cursos.module.js';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -28,6 +29,7 @@ import { AuthModule } from './auth/auth.module.js';
     }),
     AlumnosModule,
     AuthModule,
+    CursosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
